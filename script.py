@@ -5,8 +5,6 @@ from twisted.internet import task
 from twisted.internet import reactor
 from twilio.rest import TwilioRestClient
 
-CURRENT_IP = ''
-
 config = configparser.ConfigParser()
 config.read('config.ini')
 
@@ -27,13 +25,15 @@ def sendIpSMS(ip):
     )
 
 def checkIp():
-    global CURRENT_IP
-
     ip = getCurrentIp()
     print(ip)
-    if ip != CURRENT_IP:
+
+    if ip != config['IP']['CURRENT']:
         sendIpSMS(ip)
-        CURRENT_IP = ip
+
+        config['IP']['CURRENT'] = ip
+        with open(r'config.ini', 'wb') as configfile:
+            config.write(configfile)
 
 l = task.LoopingCall(checkIp)
 l.start(60)
