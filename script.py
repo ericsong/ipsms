@@ -1,8 +1,7 @@
 import requests
 import os
 import configparser
-from twisted.internet import task
-from twisted.internet import reactor
+import sched, time
 from twilio.rest import TwilioRestClient
 
 config = configparser.ConfigParser()
@@ -35,6 +34,10 @@ def checkIp():
         with open(r'config.ini', 'wb') as configfile:
             config.write(configfile)
 
-l = task.LoopingCall(checkIp)
-l.start(60)
-reactor.run()
+s = sched.scheduler(time.time, time.sleep)
+def repeat_task(sc):
+    checkIp()
+    sc.enter(60, 1, repeat_task, (sc,))
+
+s.enter(60, 1, repeat_task, (s,))
+s.run()
