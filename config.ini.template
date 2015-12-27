@@ -1,0 +1,11 @@
+[PHONE_NUMBERS]
+from = +11234567890
+to = +11234567890
+
+[TWILIO]
+acc = xxxxxxxxxxxxxxxxxx
+token = xxxxxxxxxxxxxxxxxx
+
+[IP]
+current = 0.0.0.0
+
