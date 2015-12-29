@@ -17,11 +17,14 @@ def getCurrentIp():
     return ip
 
 def sendIpSMS(ip):
-    message = client.messages.create(
-        to=config['PHONE_NUMBERS']['TO'],
-        from_=config['PHONE_NUMBERS']['FROM'],
-        body=ip
-    )
+    numbers = config['PHONE_NUMBERS']['TO'].split(",")
+
+    for number in numbers:
+        message = client.messages.create(
+            to=number,
+            from_=config['PHONE_NUMBERS']['FROM'],
+            body=ip
+        )
 
 def checkIp():
     ip = getCurrentIp()
